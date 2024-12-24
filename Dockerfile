@@ -1,33 +1,30 @@
 # المرحلة الأولى: بناء التطبيق
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+# تعيين دليل العمل إلى /src
 WORKDIR /src
 
-# نسخ ملف المشروع إلى الحاوية
-COPY ["Autsim/Autism.csproj", "Autsim/"]
+# نسخ ملف المشروع Autism.csproj إلى الحاوية
+COPY ./Autism.csproj ./Autsim/
 
 # استعادة الاعتمادات
-RUN dotnet restore "Autsim/Autism.csproj"
+RUN dotnet restore "./Autsim/Autism.csproj"
 
 # نسخ باقي الملفات إلى الحاوية
-COPY . .
+COPY ./ ./
 
 # بناء التطبيق
-WORKDIR "/src/Autsim"
-RUN dotnet build "Autism.csproj" -c Release -o /app/build
+WORKDIR /src/Autsim
+RUN dotnet publish "Autism.csproj" -c Release -o /app
 
 # المرحلة الثانية: نشر التطبيق
-FROM build AS publish
-RUN dotnet publish "Autsim.csproj" -c Release -o /app/publish
-
-# المرحلة الثالثة: إنشاء صورة التشغيل النهائية
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+
+# تعيين دليل العمل إلى /app
 WORKDIR /app
 
-# نسخ الملفات المنشورة من مرحلة النشر
-COPY --from=publish /app/publish .
+# نسخ الملفات المنشورة من مرحلة البناء إلى الحاوية
+COPY --from=build /app .
 
-# تحديد المنفذ الذي يستمع عليه التطبيق (اختياري)
-EXPOSE 80
-
-# تحديد نقطة البداية لتشغيل التطبيق
+# إعداد نقطة دخول الحاوية لتشغيل التطبيق
 ENTRYPOINT ["dotnet", "Autsim.dll"]
