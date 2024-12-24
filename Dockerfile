@@ -1,30 +1,17 @@
 # المرحلة الأولى: بناء التطبيق
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-
-# تعيين دليل العمل إلى /src
 WORKDIR /src
 
-# نسخ ملف المشروع Autism.csproj إلى الحاوية
-COPY ./Autism.csproj ./Autsim/
+# نسخ ملف المشروع واستعادة الاعتمادات
+COPY ./Autism.csproj ./  # نسخ ملف Autism.csproj من نفس المجلد الذي يحتوي على Dockerfile
+RUN dotnet restore "Autism.csproj"
 
-# استعادة الاعتمادات
-RUN dotnet restore "./Autsim/Autism.csproj"
-
-# نسخ باقي الملفات إلى الحاوية
-COPY ./ ./
-
-# بناء التطبيق
-WORKDIR /src/Autsim
-RUN dotnet publish "Autism.csproj" -c Release -o /app
+# نسخ باقي الملفات وبناء التطبيق
+COPY ./ ./  # نسخ جميع الملفات من المجلد إلى الحاوية
+RUN dotnet build "Autism.csproj" -c Release -o /app/build
 
 # المرحلة الثانية: نشر التطبيق
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
-
-# تعيين دليل العمل إلى /app
 WORKDIR /app
-
-# نسخ الملفات المنشورة من مرحلة البناء إلى الحاوية
-COPY --from=build /app .
-
-# إعداد نقطة دخول الحاوية لتشغيل التطبيق
-ENTRYPOINT ["dotnet", "Autsim.dll"]
+COPY --from=build /app .  # نسخ المحتوى من مرحلة البناء
+ENTRYPOINT ["dotnet", "Autism.dll"]
