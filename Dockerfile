@@ -7,7 +7,7 @@ COPY ./Autism.csproj ./  # نسخ ملف Autism.csproj من نفس المجلد 
 RUN dotnet restore "Autism.csproj"
 
 # نسخ باقي الملفات وبناء التطبيق
-COPY ./ ./  # نسخ جميع الملفات من المجلد إلى الحاوية
+COPY . ./  # نسخ جميع الملفات من المجلد الحالي إلى الحاوية
 RUN dotnet build "Autism.csproj" -c Release -o /app/build
 
 # المرحلة الثانية: نشر التطبيق
