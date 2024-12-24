@@ -1,0 +1,24 @@
+services:
+  autsim:
+    build: .
+    ports:
+      - "80:80" # قم بتغيير هذا الرقم بناءً على المنفذ الذي تريد تعريضه
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Host=ep-delicate-firefly-a8ex8xsg.eastus2.azure.neon.tech;Database=Autism;Username=Autism_owner;Password=jPoQUBpu28it;SSL Mode=Require;Trust Server Certificate=true
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: Autism
+      POSTGRES_USER: Autism_owner
+      POSTGRES_PASSWORD: jPoQUBpu28it
+    ports:
+      - "5432:5432" # منفذ PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
