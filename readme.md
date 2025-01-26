@@ -69,6 +69,8 @@ This project is a communication program designed to support individuals with Aut
 
 For any inquiries or additional details, feel free to reach out to Muhnnad by email.
 muhnnadqatanani123@gmail.com
+
+
 [Deployment service on render](https://autsim-qwrf.onrender.com/)
 ![image](https://github.com/user-attachments/assets/deb605f3-7a31-43f2-97c2-bb00506d50a0)
 
