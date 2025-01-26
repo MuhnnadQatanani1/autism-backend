@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/f5ce4e3b-0eb6-44e4-99cb-6f00d6c0ccc6)# README
+# README
 
 ## Overview
 This project is a communication program designed to support individuals with Autism Spectrum Disorder (ASD) using the Picture Exchange Communication System (PECS). The program enables users to select cards and construct sentences, which the system reads aloud, fostering better communication and interaction.
